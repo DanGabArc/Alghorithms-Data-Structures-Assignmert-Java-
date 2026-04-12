@@ -1,13 +1,25 @@
+/**
+ * A resizable-array implementation of the {@code MyList} interface.
+ * When the internal array becomes full, its capacity is doubled automatically.
+ *
+ * @param <T> the type of elements stored in this list
+ */
 public class MyArrayList<T> implements MyList<T> {
     private Object[] data;
     private int size;
 
     // Конструктор
+    /**
+     * Constructs an empty list with an initial capacity of ten.
+     */
     public MyArrayList() {
         this.data = new Object[10];
         this.size = 0;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void add(T element) {
         if (size == data.length) {
@@ -20,6 +32,9 @@ public class MyArrayList<T> implements MyList<T> {
         size++;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void add(int index, T element) {
         if (index < 0 || index > size) {
@@ -41,6 +56,9 @@ public class MyArrayList<T> implements MyList<T> {
         size++;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public T get(int index) {
 
@@ -50,6 +68,9 @@ public class MyArrayList<T> implements MyList<T> {
         return (T) data[index];
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public T remove(int index) {
 
@@ -68,6 +89,9 @@ public class MyArrayList<T> implements MyList<T> {
         return removed;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public T set(int index, T element) {
         if (index < 0 || index >= size) {
@@ -78,11 +102,17 @@ public class MyArrayList<T> implements MyList<T> {
         return old;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int size() {
         return size;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public boolean isEmpty() {
         if (size == 0) {
@@ -92,6 +122,9 @@ public class MyArrayList<T> implements MyList<T> {
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clear() {
         for (int i = 0; i < size; i++) {
