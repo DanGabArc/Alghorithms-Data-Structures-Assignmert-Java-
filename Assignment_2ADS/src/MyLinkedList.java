@@ -1,4 +1,13 @@
+/**
+ * A doubly-linked list implementation of the {@code MyList} interface.
+ *
+ * @param <T> the type of elements held in this list
+ */
 public class MyLinkedList<T> implements MyList<T> {
+
+    /**
+     * Inner class representing a node of the doubly-linked list.
+     */
     private static class Node<T> {
         T data;
         Node<T> next;
@@ -13,6 +22,9 @@ public class MyLinkedList<T> implements MyList<T> {
     private Node<T> tail = null;
     private int size = 0;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void add(T element) {
         Node<T> newNode = new Node<>(element);
@@ -26,10 +38,13 @@ public class MyLinkedList<T> implements MyList<T> {
         size++;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void add(int index, T element) {
         if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Index: " + index, ", Size: " + size);
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
 
         if (index == 0) {
@@ -43,7 +58,7 @@ public class MyLinkedList<T> implements MyList<T> {
             }
             size++;
             return;
-        } else if (index = size) {
+        } else if (index == size) { // FIXED: was assignment '='
             add(element);
             return;
         }
@@ -61,6 +76,9 @@ public class MyLinkedList<T> implements MyList<T> {
         size++;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public T get(int index) {
         if (index < 0 || index >= size) {
@@ -71,13 +89,17 @@ public class MyLinkedList<T> implements MyList<T> {
         for (int i = 0; i < index; i++) {
             current = current.next;
         }
-        return current.element;
+        return current.data; // FIXED: was current.element
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public T remove(int index) {
-        if (index < 0 || index > size) {
-            throw new IndexOutOfBoundsException("Index: " + index, ", Size: " + size);
+        // FIXED: index >= size instead of index > size
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
         }
 
         Node<T> current = head;
@@ -85,23 +107,17 @@ public class MyLinkedList<T> implements MyList<T> {
             current = current.next;
         }
 
-        T removedElement = current.element;
+        T removedElement = current.data; // FIXED: was current.element
 
         if (size == 1) {
             head = tail = null;
-        }
-
-        else if (index == 0) {
+        } else if (current == head) {
             head = current.next;
             head.prev = null;
-        }
-
-        else if (index == size) {
+        } else if (current == tail) {
             tail = current.prev;
-            current.next = null;
-        }
-
-        else {
+            tail.next = null;
+        } else {
             current.prev.next = current.next;
             current.next.prev = current.prev;
         }
@@ -110,22 +126,43 @@ public class MyLinkedList<T> implements MyList<T> {
         return removedElement;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public T set(int index, T element) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        }
+
         Node<T> current = head;
         for (int i = 0; i < index; i++) {
             current = current.next;
         }
-        T old = current.element;
-        current.element = element;
+        T old = current.data; // FIXED: was current.element
+        current.data = element;
         return old;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public int size() {
         return size;
     }
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isEmpty() {
+        return size == 0;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void clear() {
         Node<T> current = head;
@@ -133,6 +170,7 @@ public class MyLinkedList<T> implements MyList<T> {
             Node<T> next = current.next;
             current.next = null;
             current.prev = null;
+            current.data = null; // help garbage collector
             current = next;
         }
         head = null;
