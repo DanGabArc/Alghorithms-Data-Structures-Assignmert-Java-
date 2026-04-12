@@ -53,6 +53,10 @@ public class MyArrayList<T> implements MyList<T> {
     @Override
     public T remove(int index) {
 
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        }
+
         T removed = (T) data[index];
 
         for (int i = index; i < size; i++) {
@@ -62,6 +66,16 @@ public class MyArrayList<T> implements MyList<T> {
         size--;
 
         return removed;
+    }
+
+    @Override
+    public T set(int index, T element) {
+        if (index < 0 || index >= size) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        }
+        T old = (T) data[index];
+        data[index] = element;
+        return old;
     }
 
     @Override
